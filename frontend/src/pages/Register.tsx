@@ -1,20 +1,44 @@
 import { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 
 function Register() {
+  const navigate = useNavigate(); // Inicializa o navigate
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log({ email, password, name });
+    const userData = { email, password, name };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/register', userData);
+
+      // Verifica se a resposta está no intervalo de sucesso
+      if (response.status >= 200 && response.status < 300) {
+        setSuccess('Usuário registrado com sucesso!');
+        console.log(response.data); // Aqui você pode gerenciar a resposta do servidor
+
+        // Redireciona para a página de login após o registro
+        navigate('/login');
+      } else {
+        throw new Error('Erro ao registrar o usuário.');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message); // Ajuste para pegar a mensagem de erro correta
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h2 className="text-2xl font-semibold text-center mb-6">Registrar</h2>
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+        {success && <div className="text-green-500 text-center mb-4">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700" htmlFor="name">Nome</label>
