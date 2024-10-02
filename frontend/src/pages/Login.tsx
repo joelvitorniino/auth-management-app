@@ -1,19 +1,42 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import axios from 'axios';
 
 function Login() {
+  const navigate = useNavigate(); // Inicializa o navigate
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica para autenticar o usuário
-    console.log({ email, password });
+
+    const userData = { email, password };
+
+    try {
+      const response = await axios.post('http://localhost:5000/api/auth/login', userData);
+
+      if (response.status >= 200 && response.status < 300) {
+        localStorage.setItem('token', response.data.token);
+        setSuccess('Usuário autenticado com sucesso!');
+        
+        navigate('/profile', { state: { user: response.data.user } });
+      } else {
+        throw new Error('Erro ao autenticar o usuário.');
+      }
+    } catch (err: any) {
+      setError(err.response?.data?.message || err.message); 
+      console.log(err);
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-6">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full">
         <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
+        {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+        {success && <div className="text-green-500 text-center mb-4">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label className="block text-gray-700" htmlFor="email">Email</label>
