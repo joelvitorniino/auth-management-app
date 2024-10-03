@@ -71,6 +71,14 @@ Esta é uma aplicação simples de autenticação e gerenciamento de usuários, 
      ```bash
      yarn start
      ```
+   - Inicializar o prisma:
+     ```bash
+     yarn prisma:generate
+     ``´
+   - Inicializar o banco de dados Sqlite:
+     ```bash
+     yarn prisma:migrate
+     ```
 
 2. **Frontend:**
    - Entre no diretório do frontend:
