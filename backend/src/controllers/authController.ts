@@ -3,12 +3,21 @@ import bcrypt from 'bcryptjs';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import prisma from '../prisma/client';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secretrandomkey';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export const register = async (req: Request, res: Response): Promise<Response> => {
   const { email, password, name } = req.body;
 
   try {
+    // Verifica se o e-mail já existe
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'E-mail já cadastrado' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
@@ -17,11 +26,13 @@ export const register = async (req: Request, res: Response): Promise<Response> =
         name,
       },
     });
+
     return res.status(201).json({ id: user.id, email: user.email, name: user.name });
   } catch (error) {
     return res.status(500).json({ message: 'Erro ao registrar usuário' });
   }
 };
+
 
 export const login = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
