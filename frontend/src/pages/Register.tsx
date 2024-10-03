@@ -6,29 +6,46 @@ import React from 'react';
 function Register() {
   const navigate = useNavigate(); 
   const [email, setEmail] = useState('');
+
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  const [isLoading, setIsLoading] = useState(false); 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+
+    setSuccess('');
+    setIsLoading(true); 
 
     const userData = { email, password, name };
 
     try {
       const response = await axios.post('http://localhost:5000/api/auth/register', userData);
 
-      // Verifica se a resposta está no intervalo de sucesso
       if (response.status >= 200 && response.status < 300) {
         setSuccess('Usuário registrado com sucesso!');
+        setEmail('');
+
+        setPassword('');
+        setName('');
 
         navigate('/login');
       } else {
         throw new Error('Erro ao registrar o usuário.');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message);
+      if (err.response?.status === 400 && err.response?.data?.message === 'E-mail já cadastrado') {
+        setError('Este e-mail já está cadastrado. Por favor, utilize outro.');
+      } else {
+        setError(err.response?.data?.message || err.message);
+      }
+    } finally {
+      setIsLoading(false); 
     }
   };
 
@@ -74,9 +91,10 @@ function Register() {
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+            className={`w-full bg-blue-600 text-white font-semibold py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={isLoading} // Desabilita o botão durante o carregamento
           >
-            Criar Conta
+            {isLoading ? 'Registrando...' : 'Criar Conta'}
           </button>
         </form>
       </div>
