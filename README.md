@@ -74,7 +74,7 @@ Esta é uma aplicação simples de autenticação e gerenciamento de usuários, 
    - Inicializar o prisma:
      ```bash
      yarn prisma:generate
-     ``´
+     ```
    - Inicializar o banco de dados Sqlite:
      ```bash
      yarn prisma:migrate
