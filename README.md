@@ -41,7 +41,12 @@ Esta é uma aplicação simples de autenticação e gerenciamento de usuários, 
 3. **Acessar a aplicação:**
    - Frontend: Acesse `http://localhost:5173`.
    - Backend: Acesse `http://localhost:5000`.
-
+  
+4. **Desligar os contêneires**
+   No diretório raiz do projeto, execute:
+   ```bash
+   docker-compose down -v
+   ```
 ### Rodando Localmente (Sem Docker)
 
 1. **Backend:**
