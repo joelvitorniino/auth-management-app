@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
+import React from 'react';
 
 function Register() {
-  const navigate = useNavigate(); // Inicializa o navigate
+  const navigate = useNavigate(); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -21,15 +22,13 @@ function Register() {
       // Verifica se a resposta está no intervalo de sucesso
       if (response.status >= 200 && response.status < 300) {
         setSuccess('Usuário registrado com sucesso!');
-        console.log(response.data); // Aqui você pode gerenciar a resposta do servidor
 
-        // Redireciona para a página de login após o registro
         navigate('/login');
       } else {
         throw new Error('Erro ao registrar o usuário.');
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || err.message); // Ajuste para pegar a mensagem de erro correta
+      setError(err.response?.data?.message || err.message);
     }
   };
 
