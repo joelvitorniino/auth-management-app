@@ -5,7 +5,10 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc --build && node app.ts",
-    "dev": "ts-node src/app.ts"
+    "dev": "ts-node src/app.ts",
+    "prisma:migrate": "npx prisma migrate dev --name init",  
+    "prisma:generate": "npx prisma generate",
+    "prisma:reset": "npx prisma migrate reset" 
   },
   "dependencies": {
     "@prisma/client": "^5.20.0",
