@@ -31,16 +31,15 @@ Esta é uma aplicação simples de autenticação e gerenciamento de usuários, 
    git clone https://github.com/joelvitorniino/auth-management-app.git
    cd auth-management
    ```
-2 **Configurar o .env:**
+2. **Configurar o .env:**
    ```bash
    cd backend
    ```
    - Crie um arquivo .env, e bote o seguinte conteúdo nele:
    ```
    DATABASE_URL="file:./dev.db"
-   JWT_SECRET=""
+   JWT_SECRET="sua_chave_secreta_aqui"
    ```
-   - No JWT_SECRET, bote a palavra ou o código que você achar melhor!
 
 2. **Subir os contêineres:**
    No diretório raiz do projeto, execute:
