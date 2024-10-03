@@ -26,7 +26,7 @@ function Home() {
         </div>
   
         <footer className="mt-10 text-center text-gray-600">
-          <p>© {new Date().getFullYear()} Meu App. Todos os direitos reservados.</p>
+          <p>© {new Date().getFullYear()} Joel Vitor. Todos os direitos reservados.</p>
         </footer>
       </div>
     );
