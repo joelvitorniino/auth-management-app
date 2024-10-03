@@ -19,6 +19,9 @@ COPY . .
 # Gera o Prisma Client (necessário se o Prisma for utilizado)
 RUN npx prisma generate
 
+# Gera o banco de dados
+RUN npm run prisma:migrate
+
 # Compila o TypeScript
 RUN npx tsc
 
