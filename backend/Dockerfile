@@ -1,5 +1,5 @@
-# Etapa de construção (build)
-FROM node:20 AS build
+# Etapa única de construção e execução
+FROM node:20
 
 # Definindo o diretório de trabalho dentro do container
 WORKDIR /app
@@ -20,19 +20,10 @@ COPY . .
 RUN npx prisma generate
 
 # Compila o TypeScript
-RUN tsc
-
-# Etapa final de execução
-FROM node:20 AS production
-
-# Definindo o diretório de trabalho na fase final
-WORKDIR /app
-
-# Copia as dependências e o código compilado da etapa anterior
-COPY --from=build /app /app
+RUN npx tsc
 
 # Exponha a porta em que a aplicação irá rodar
 EXPOSE 5000
 
 # Comando para iniciar o servidor
-CMD ["node", "dist/app.js"]
+CMD ["node", "dist/app.js"] 
